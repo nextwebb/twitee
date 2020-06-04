@@ -36,17 +36,18 @@
          
           <%- filterUserHTML(post.body) %>
         </p>
-
-        <form>
-           <strong>(1) Likes </strong> 
-           <img src="https://img.icons8.com/cotton/64/000000/like--v1.png" height="40px" width="40px"/>
-        </form>
-
-        <form>
+        <div id="like"  v-if="LikeNow">
+          <span>
+            <strong> Like </strong>
+            <img src="https://img.icons8.com/cotton/64/000000/like--v1.png" height="40px" width="40px"/>
+            <strong> unlike </strong>
+          </span>
+      </div>
+      <div id="commentBox">
+        <form @submit.prevent='addComment'>
            <div style="border-top: 1px solid black;">
               <div class="media mt-3 shadow-textarea">
-                <img class="d-flex avatar-tiny  z-depth-1-half mr-3"src="<%= post.author.avatar %>
-                alt="Avatar">
+                
                 <div class="media-body">
                   <h5 class="mt-0 font-weight-bold blue-text" style="display: inline-block; margin-right: 10px;"> 
                     <strong style="margin-right: 10px;">@<%= //user.username %>Kingston</strong>
@@ -54,41 +55,45 @@
                   <div class="form-group basic-textarea rounded-corners">
                     <textarea class="form-control z-depth-1" id="exampleFormControlTextarea345" rows="3" placeholder="Write your comment..."></textarea>
                   </div>
+                  <button type="button" style="float: right; clear: both;" class="btn btn-primary">Submit</button>
                 </div>
               </div>
+            </div>
         </form>
-
+            <div>
               <div class="media mt-3 shadow-textarea">
-                <img class="d-flex avatar-tiny  z-depth-1-half mr-3"src="<%= post.author.avatar %>
-                alt="Avatar">
+               
                 <div class="media-body">
                   <h5 class="mt-0 font-weight-bold blue-text" style="display: inline-block; margin-right: 10px;"> 
-                    <strong style="margin-right: 10px;">@<%= //user.username %>Douglas</strong>
+                    <strong style="margin-right: 10px;">@williams</strong>
                     <span class="text-muted small">
                       <%= getTime(post.createdDate) %>
                     </span>
                   </h5> 
                   <div class="form-group basic-textarea rounded-corners">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae voluptatum aliquam dolorem quas. Cum rem, amet architecto deleniti saepe at sunt explicabo consequuntur maxime iure magnam ullam reiciendis repellat molestiae.
+                    Next gen Tech!
                   </div>
                 </div>
               </div>
 
               <div class="media mt-3 shadow-textarea">
-                <img class="d-flex avatar-tiny  z-depth-1-half mr-3"src="<%= post.author.avatar %>
-                alt="Avatar">
+                
                 <div class="media-body">
                   <h5 class="mt-0 font-weight-bold blue-text" style="display: inline-block; margin-right: 10px;"> 
-                    <strong style="margin-right: 10px;">@<%= //user.username %>Thomas</strong>
+                    <strong style="margin-right: 10px;">@Douglas</strong>
                     <span class="text-muted small">
                       <%= getTime(post.createdDate) %>
                     </span>
                   </h5> 
                   <div class="form-group basic-textarea rounded-corners">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae voluptatum aliquam dolorem quas. Cum rem, amet architecto deleniti saepe at sunt explicabo consequuntur maxime iure magnam ullam reiciendis repellat molestiae.
+                  wow this would be great!
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+
+             
 
               
               
@@ -99,3 +104,23 @@
   </div>
   
   <%- include('includes/footer') %>
+
+  <script>
+    var app = new Vue({
+              el: '#commentBox',
+              data: {
+                comments: [] 
+              },
+              async created () {
+                await fetch('/api/v1/comments/getall').then(res => res.json()).then((data) => {
+                  console.log()
+
+                })
+              },
+              methods:{
+               async addComment() {
+               }
+
+              }
+    })
+  </script>

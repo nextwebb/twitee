@@ -13,7 +13,7 @@ const moment = require('moment');
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
-
+app.use('/api', require('./router-api'))
 
 let sessionOptions = session({
     secret: "Javascript is soooo coool",
@@ -83,6 +83,7 @@ app.use('/', function(err, req, res, next) {
             req.session.save(() => res.redirect('/'))
         } else {
             res.render('404')
+            console.log(err)
         }
     }
 

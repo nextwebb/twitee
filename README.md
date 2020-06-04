@@ -18,5 +18,23 @@ Twitee is a mini and substandard runoff of Twitter. Users register and login and
   4.User POST twit  
   5.User DELETE twit (if owned by user)  
   6.User POST comments under twits  
-  7.Post page shows all posted twits and comments under twits (Each twit will show the name of the poster, the date posted, the time posted, the posted content, like button and a comment form)  
+  7.Post page shows all posted twits and comments under twits
   8.User log out  
+
+  ## Comments on Post tweets
+
+Returns all comments.
+
+`GET`  <https://localhost:8000/api/v1/comments/all/:authorId>
+****
+
+Add comments from the client
+
+`POST`  <https://localhost:8000/api/v1/comments/add>
+  Sample comment data
+`{
+"authorId": "121213123",
+ "guestComment":"hello man. nice post",
+ "guestId":"2132431432"
+ }`
+****
