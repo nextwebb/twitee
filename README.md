@@ -12,7 +12,7 @@ Twitee is a mini and substandard runoff of Twitter. Users register and login and
 - Unauthenticated users cannot interface with the app.
 
 
-  1. In short, a feature list of the app will be
+  1.In short, a feature list of the app will be
   2. User registration and authentication
   3. User Log in
   4. User POST twit
