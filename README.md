@@ -1,4 +1,5 @@
 # twitee
+<https://twitee.herokuapp.com/>
 Twitee is a mini and substandard runoff of Twitter. Users register and login and can put up anything that crosses their mind. The whole world can view their twits and comment on their twits /and like them. We want you to build this project using NodeJS as your backend tool.
 
 ## DETAILED DESIGN 
@@ -21,16 +22,15 @@ Twitee is a mini and substandard runoff of Twitter. Users register and login and
   7.Post page shows all posted twits and comments under twits
   8.User log out  
 
-  ## Comments on Post tweets
+  ## Comments on tweets
 
 Returns all comments.
 
-`GET`  <https://localhost:8000/api/v1/comments/all/:authorId>
+`GET`  <https://twitee.herokuapp.com/api/v1/comments/all/:authorId>
 ****
-
 Add comments from the client
 
-`POST`  <https://localhost:8000/api/v1/comments/add>
+`POST`  <https://twitee.herokuapp.com/v1/comments/add>
   Sample comment data
 `{
 "authorId": "121213123",
