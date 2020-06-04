@@ -1,0 +1,4 @@
+- make posts show to every user- the plan is, hack the user dashboard to show all tweets.
+
+- comments on posts feature
+- like on posts feature

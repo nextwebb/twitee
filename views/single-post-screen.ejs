@@ -1,0 +1,101 @@
+  <%- include('includes/header') %>
+  
+  <div class="container py-md-5 container--narrow">
+
+    <%- include('includes/flash') %>
+
+    <div class="d-flex justify-content-between">
+      <h2><%= post.title %></h2>
+      <% if (post.isVisitorOwner) { %>
+        <span class="pt-2">
+          <a href="/post/<%= post._id %>/edit" class="text-primary mr-2" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit"></i></a>
+          <form class="delete-post-form d-inline" action="/post/<%= post._id %>/delete" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button class="delete-post-button text-danger" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash"></i></button>
+          </form>
+        </span>
+     <% } %>
+    </div>
+      
+    
+
+      <div class="media">
+        <img class="d-flex rounded-circle avatar z-depth-1-half mr-3"src="<%= post.author.avatar %>
+          alt="Avatar">
+        <div class="media-body">
+          <p class="text-muted small mb-4">
+            <a style="text-decoration: none;" href="/profile/<%= post.author.username %>">
+                <h5 class="mt-0 font-weight-bold blue-text" style="display: inline-block; margin-right: 10px;">
+                  <%= post.author.username %>
+                </h5>
+                <span class="text-muted small">
+                  <%= getTime(post.createdDate) %>
+                </span>
+            </a>
+         
+         
+          <%- filterUserHTML(post.body) %>
+        </p>
+
+        <form>
+           <strong>(1) Likes </strong> 
+           <img src="https://img.icons8.com/cotton/64/000000/like--v1.png" height="40px" width="40px"/>
+        </form>
+
+        <form>
+           <div style="border-top: 1px solid black;">
+              <div class="media mt-3 shadow-textarea">
+                <img class="d-flex avatar-tiny  z-depth-1-half mr-3"src="<%= post.author.avatar %>
+                alt="Avatar">
+                <div class="media-body">
+                  <h5 class="mt-0 font-weight-bold blue-text" style="display: inline-block; margin-right: 10px;"> 
+                    <strong style="margin-right: 10px;">@<%= //user.username %>Kingston</strong>
+                  </h5> 
+                  <div class="form-group basic-textarea rounded-corners">
+                    <textarea class="form-control z-depth-1" id="exampleFormControlTextarea345" rows="3" placeholder="Write your comment..."></textarea>
+                  </div>
+                </div>
+              </div>
+        </form>
+
+              <div class="media mt-3 shadow-textarea">
+                <img class="d-flex avatar-tiny  z-depth-1-half mr-3"src="<%= post.author.avatar %>
+                alt="Avatar">
+                <div class="media-body">
+                  <h5 class="mt-0 font-weight-bold blue-text" style="display: inline-block; margin-right: 10px;"> 
+                    <strong style="margin-right: 10px;">@<%= //user.username %>Douglas</strong>
+                    <span class="text-muted small">
+                      <%= getTime(post.createdDate) %>
+                    </span>
+                  </h5> 
+                  <div class="form-group basic-textarea rounded-corners">
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae voluptatum aliquam dolorem quas. Cum rem, amet architecto deleniti saepe at sunt explicabo consequuntur maxime iure magnam ullam reiciendis repellat molestiae.
+                  </div>
+                </div>
+              </div>
+
+              <div class="media mt-3 shadow-textarea">
+                <img class="d-flex avatar-tiny  z-depth-1-half mr-3"src="<%= post.author.avatar %>
+                alt="Avatar">
+                <div class="media-body">
+                  <h5 class="mt-0 font-weight-bold blue-text" style="display: inline-block; margin-right: 10px;"> 
+                    <strong style="margin-right: 10px;">@<%= //user.username %>Thomas</strong>
+                    <span class="text-muted small">
+                      <%= getTime(post.createdDate) %>
+                    </span>
+                  </h5> 
+                  <div class="form-group basic-textarea rounded-corners">
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae voluptatum aliquam dolorem quas. Cum rem, amet architecto deleniti saepe at sunt explicabo consequuntur maxime iure magnam ullam reiciendis repellat molestiae.
+                  </div>
+                </div>
+              </div>
+
+              
+              
+           </div>
+        </div>
+      </div>
+
+  </div>
+  
+  <%- include('includes/footer') %>
