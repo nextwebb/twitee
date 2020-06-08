@@ -31,7 +31,9 @@ Returns all comments.
 Add comments from the client
 
 `POST`  <https://twitee.herokuapp.com/v1/comments/add>
+****
   Sample comment data
+  
 `{
 "postId": "121213123",
  "guestComment":"hello man. nice post",
