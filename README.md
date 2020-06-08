@@ -33,7 +33,7 @@ Add comments from the client
 `POST`  <https://twitee.herokuapp.com/v1/comments/add>
   Sample comment data
 `{
-"authorId": "121213123",
+"postId": "121213123",
  "guestComment":"hello man. nice post",
  "guestId":"2132431432"
  }`
