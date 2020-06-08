@@ -89,6 +89,30 @@ app.use('/', function(err, req, res, next) {
 
 })
 
+const server = require('http').createServer(app)
+//we're creating a server and passing the express app as the handler
+
+const io = require('socket.io')(server)//we're adding socket functionality to this server
+
+// makes all session data about a user available within the socket
+io.use(function(socket, next){
+    sessionOptions(socket.request, socket.request.res, next )
+})
+
+io.on("connection", function(socket) {
+   console.log("A new user connected")
+    // if (socket.request.session.user) {
+    //     // let user = socket.request.session.user
+
+    //     // socket.emit("welcome", {username: user.username, avatar: user.avatar} )
+
+    //     // socket.on('chatMessageFromBrowser', function(data){
+    //     //     // when we use io.emit() message gets broadcasted to any and  all browsers connected to this server
+    //     //     //  socket.broadcast.emit() message gets broadcasted to all browser connected except the sender
+    //     //     socket.broadcast.emit('chatMessageFromServer', {message: sanitizeHTML(data.message, { allowedTags: [],allowedAttributes: {} }), username:user.username, avatar: user.avatar})
+    //     // } ) 
+    // }
+})
 
 
-module.exports = app; // so we're powering the entire server
+module.exports = server; // so we're powering the entire server

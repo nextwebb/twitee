@@ -10,6 +10,7 @@ exports.getAllComments = function(req, res) {
       })
    }
     }).catch(err => {
+      console.log(err)
         res.status(400).json({
             status: false,
             data: 'Bad request!'
@@ -28,6 +29,7 @@ exports.addComment = function(req, res) {
    });
 }
 }).catch(err => {
+  console.log(err)
     res.status(400).json({
         status: false,
         data: 'Bad request!'

@@ -21,104 +21,130 @@
 
       <div class="media">
         <img class="d-flex rounded-circle avatar z-depth-1-half mr-3"src="<%= post.author.avatar %>
-          alt="Avatar">
-        <div class="media-body">
-          <p class="text-muted small mb-4">
-            <a style="text-decoration: none;" href="/profile/<%= post.author.username %>">
-                <h5 class="mt-0 font-weight-bold blue-text" style="display: inline-block; margin-right: 10px;">
-                  <%= post.author.username %>
-                </h5>
-                <span class="text-muted small">
-                  <%= getTime(post.createdDate) %>
+          alt="Avatar"> 
+          <div class="media-body">
+              <p class="text-muted small mb-4">
+                <a style="text-decoration: none;" href="/profile/<%= post.author.username %>">
+                    <h5 class="mt-0 font-weight-bold blue-text" style="display: inline-block; margin-right: 10px;">
+                      <%= post.author.username %>
+                    </h5>
+                    <span class="text-muted small">
+                      <%= getTime(post.createdDate) %>
+                    </span>
+                </a> 
+              <%- filterUserHTML(post.body) %>
+            </p>
+              <div id="like"  v-if="LikeNow">
+                <span>
+                  <strong> Like </strong>
+                  <img src="https://img.icons8.com/cotton/64/000000/like--v1.png" height="40px" width="40px"/>
+                  <strong> unlike </strong>
                 </span>
-            </a>
-         
-         
-          <%- filterUserHTML(post.body) %>
-        </p>
-        <div id="like"  v-if="LikeNow">
-          <span>
-            <strong> Like </strong>
-            <img src="https://img.icons8.com/cotton/64/000000/like--v1.png" height="40px" width="40px"/>
-            <strong> unlike </strong>
-          </span>
-      </div>
-      <div id="commentBox">
-        <form @submit.prevent='addComment'>
-           <div style="border-top: 1px solid black;">
-              <div class="media mt-3 shadow-textarea">
-                
-                <div class="media-body">
-                  <h5 class="mt-0 font-weight-bold blue-text" style="display: inline-block; margin-right: 10px;"> 
-                    <strong style="margin-right: 10px;">@<%= //user.username %>Kingston</strong>
-                  </h5> 
-                  <div class="form-group basic-textarea rounded-corners">
-                    <textarea class="form-control z-depth-1" id="exampleFormControlTextarea345" rows="3" placeholder="Write your comment..."></textarea>
-                  </div>
-                  <button type="button" style="float: right; clear: both;" class="btn btn-primary">Submit</button>
-                </div>
-              </div>
             </div>
-        </form>
-            <div>
-              <div class="media mt-3 shadow-textarea">
-               
-                <div class="media-body">
-                  <h5 class="mt-0 font-weight-bold blue-text" style="display: inline-block; margin-right: 10px;"> 
-                    <strong style="margin-right: 10px;">@williams</strong>
-                    <span class="text-muted small">
-                      <%= getTime(post.createdDate) %>
-                    </span>
-                  </h5> 
-                  <div class="form-group basic-textarea rounded-corners">
-                    Next gen Tech!
-                  </div>
-                </div>
-              </div>
+            <div id="commentBox">
+              <form @submit.prevent='addComment'>
+                <div style="border-top: 1px solid black;">
+                    <div class="media mt-3 shadow-textarea">
+                      <!-- // guestId -->
+                      <input id="guestId" type="text" hidden value=" <%=user._id %>"> 
 
-              <div class="media mt-3 shadow-textarea">
-                
-                <div class="media-body">
-                  <h5 class="mt-0 font-weight-bold blue-text" style="display: inline-block; margin-right: 10px;"> 
-                    <strong style="margin-right: 10px;">@Douglas</strong>
-                    <span class="text-muted small">
-                      <%= getTime(post.createdDate) %>
-                    </span>
-                  </h5> 
-                  <div class="form-group basic-textarea rounded-corners">
-                  wow this would be great!
+                      <div class="media-body">
+                        <h5 class="mt-0 font-weight-bold blue-text" style="display: inline-block; margin-right: 10px;"> 
+                          <strong style="margin-right: 10px;">@<%= user.username %></strong>
+                        </h5> 
+                        <div class="form-group basic-textarea rounded-corners">
+                          <textarea id="textArea" class="form-control z-depth-1" id="exampleFormControlTextarea345" rows="3" v-model="textArea">
+                          </textarea>
+                        </div>
+                        <button style="float: right; clear: both;" class="btn btn-primary">Submit
+                        </button>
+                      </div>
+                    </div>
                   </div>
+              </form>
+                  <div id="allCommentBox">
+                    <div class="media mt-3 shadow-textarea" v-for="(comment, index) in comments" v-bind:key="comment._id" >
+                      <div class="media-body">
+                        <h5 class="mt-0 font-weight-bold blue-text" style="display: inline-block; margin-right: 10px;"> 
+                          <strong style="margin-right: 10px;">{{ comment.username}} </strong>
+                          <span class="text-muted small">
+                           {{comment.createdDate}}
+                          </span>
+                        </h5> 
+                        <div class="form-group basic-textarea rounded-corners">
+                          {{comment.comment}}
+                        </div>
+                      </div>
+                    </div>
                 </div>
-              </div>
             </div>
           </div>
-
-             
-
-              
-              
-           </div>
         </div>
       </div>
 
   </div>
   
   <%- include('includes/footer') %>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
   <script>
-    var app = new Vue({
+    const app = new Vue({
               el: '#commentBox',
               data: {
-                comments: [] 
+                comments: [],
+                guestId: null,
+                postId: null,
+                textArea: null,
+                commentArea: null
               },
+              // sockets: {
+              //   connect: function () {
+              //       console.log('socket connected')
+              //   },
+              //   customEmit: function (data) {
+              //       console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
+              //   }
+              // },
               async created () {
-                await fetch('/api/v1/comments/getall').then(res => res.json()).then((data) => {
-                  console.log()
+                const pathArray = window.location.pathname.split('/');
+                this.postId = pathArray[2]
+                this.guestId = document.querySelector('#guestId').value.trim(),
 
+                 await fetch(`/api/v1/comments/all/${this.postId}`)
+                .then(res => res.json())
+                .then((docs) => {
+                  const {data} = docs;
+                  data.map((comment) => {
+                    this.comments.push(comment);
+                    console.log(comment)
+                  })
                 })
+
+                console.log(this.comments)
               },
+          
               methods:{
                async addComment() {
+                this.commentArea = {
+                  guestComment: this.textArea.trim(),
+                  guestId: this.guestId.trim(),
+                  postId: this.postId.trim()
+                }
+
+                // console.log(this.commentArea)
+                await fetch(`/api/v1/comments/add`,
+                        {
+                          method: 'POST',
+                          headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json' 
+                          },
+                          credentials: 'include',
+                          body: JSON.stringify(this.commentArea)
+                        }).then((response)=>{
+                          console.log('success!')
+                          return response.json();
+                          document.querySelector('#textArea').value = null
+                        }).catch(err => console.log(err) )
                }
 
               }
