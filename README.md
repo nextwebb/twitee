@@ -35,12 +35,8 @@ Add comments from the client
   Sample comment data
   
 `{
-
 "postId": "121213123",
-
  "guestComment":"hello man. nice post",
- 
  "guestId":"2132431432"
- 
  }`
 ****
