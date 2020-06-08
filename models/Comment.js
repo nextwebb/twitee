@@ -26,7 +26,8 @@ Comment.prototype.add = function(){
         // add comment and guestId to comments document
         commentsCollection.insertOne(this.data)
         .then((res) => {
-            resolve(res)
+            resolve(res.insertedId)
+            
         })
         .catch((err) => {
             reject(err)
@@ -40,6 +41,7 @@ Comment.getCommentsById = function(id){
         try {
             let comments = await commentsCollection.aggregate([
               {$match: {postId: new ObjectID(id)}},
+              { $sort : { createdDate : -1 } },
               {$lookup: {
                   from: "users",
                   localField: "guestId", 

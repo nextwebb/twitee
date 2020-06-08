@@ -50,23 +50,27 @@
 
                       <div class="media-body">
                         <h5 class="mt-0 font-weight-bold blue-text" style="display: inline-block; margin-right: 10px;"> 
-                          <strong style="margin-right: 10px;">@<%= user.username %></strong>
+                          @<strong id ="guestUsername" style="margin-right: 10px;"><%= user.username %></strong>
                         </h5> 
                         <div class="form-group basic-textarea rounded-corners">
                           <textarea id="textArea" class="form-control z-depth-1" id="exampleFormControlTextarea345" rows="3" v-model="textArea">
                           </textarea>
                         </div>
-                        <button style="float: right; clear: both;" class="btn btn-primary">Submit
+                        <button  style="float: right; clear: both;" class=" btn btn-primary">Submit
                         </button>
+                        
                       </div>
+                      
                     </div>
                   </div>
+                 
               </form>
                   <div id="allCommentBox">
+                    
                     <div class="media mt-3 shadow-textarea" v-for="(comment, index) in comments" v-bind:key="comment._id" >
                       <div class="media-body">
                         <h5 class="mt-0 font-weight-bold blue-text" style="display: inline-block; margin-right: 10px;"> 
-                          <strong style="margin-right: 10px;">{{ comment.username}} </strong>
+                          <strong style="margin-right: 10px;"> {{ comment.username}} </strong> 
                           <span class="text-muted small">
                            {{comment.createdDate}}
                           </span>
@@ -85,7 +89,7 @@
   </div>
   
   <%- include('includes/footer') %>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
+
   <script>
     const app = new Vue({
               el: '#commentBox',
@@ -94,43 +98,29 @@
                 guestId: null,
                 postId: null,
                 textArea: null,
-                commentArea: null
+                commentArea: null,
+                profilelink: [],
+                guestUsername:null,
+                guestComment:null,
+                insertedCommentId: null,
               },
-              // sockets: {
-              //   connect: function () {
-              //       console.log('socket connected')
-              //   },
-              //   customEmit: function (data) {
-              //       console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
-              //   }
-              // },
-              async created () {
-                const pathArray = window.location.pathname.split('/');
-                this.postId = pathArray[2]
-                this.guestId = document.querySelector('#guestId').value.trim(),
-
-                 await fetch(`/api/v1/comments/all/${this.postId}`)
-                .then(res => res.json())
-                .then((docs) => {
-                  const {data} = docs;
-                  data.map((comment) => {
-                    this.comments.push(comment);
-                    console.log(comment)
-                  })
-                })
-
-                console.log(this.comments)
+               created () {
+                this.getComments()
               },
           
               methods:{
                async addComment() {
+
+                 if( !this.textArea){
+                  return;
+                 } 
+
                 this.commentArea = {
                   guestComment: this.textArea.trim(),
                   guestId: this.guestId.trim(),
                   postId: this.postId.trim()
                 }
 
-                // console.log(this.commentArea)
                 await fetch(`/api/v1/comments/add`,
                         {
                           method: 'POST',
@@ -141,12 +131,41 @@
                           credentials: 'include',
                           body: JSON.stringify(this.commentArea)
                         }).then((response)=>{
-                          console.log('success!')
                           return response.json();
-                          document.querySelector('#textArea').value = null
-                        }).catch(err => console.log(err) )
-               }
+                        }).then((success) => {
+                          this.insertedCommentId = success.data.id
+                          this.guestUsername = document.querySelector('#guestUsername').innerText
+                          this.newComment()
+                          this.comments.unshift(this.guestComment);
+                          this.textArea = null
+                          this.feedback = null
+                          }).catch(err => console.log(err) )
+                    },
 
-              }
+                      async getComments() {
+                        const pathArray = window.location.pathname.split('/');
+                        this.postId = pathArray[2]
+                        this.guestId = document.querySelector('#guestId').value.trim(),
+                        await fetch(`/api/v1/comments/all/${this.postId}`)
+                        .then(res => res.json())
+                        .then((docs) => {
+                          const {data} = docs;
+                          data.map((comment) => {
+                            this.comments.push(comment);
+                          })
+                        })
+                      },
+
+                    newComment() {
+                      this.guestComment = {
+                        comment: this.textArea.trim(),
+                        createdDate: moment(new Date()).format('LLL'),
+                        username: this.guestUsername.trim(),
+                        _id: this.insertedCommentId
+                      }
+                      return this.guestComment
+                    }
+
+           }
     })
   </script>

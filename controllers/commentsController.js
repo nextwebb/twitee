@@ -21,11 +21,14 @@ exports.getAllComments = function(req, res) {
 exports.addComment = function(req, res) {
    let comment = new Comment(req.body);
    comment.add().then(
-       (success) => {
-     if(success){
+       (response) => {
+     if(response){
          res.status(200).json({
             status: true,
-            data: 'Comment added!'
+            data: {
+              id: response,
+              message:'comment added!'
+            }
    });
 }
 }).catch(err => {
